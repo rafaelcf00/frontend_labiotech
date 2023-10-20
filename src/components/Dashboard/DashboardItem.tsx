@@ -3,12 +3,12 @@ import Item from "../Item";
 
 type DashboardItemProps = {
   children: React.ReactNode;
-  marginRigth?: string;
+  marginRigth?: boolean;
 };
 
 const DashboardItem = ({ children, marginRigth }: DashboardItemProps) => {
   return (
-    <Item marginRigth={`${marginRigth}`}>
+    <Item marginRigth={marginRigth}>
       <div>{children}</div>
     </Item>
   );

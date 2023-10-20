@@ -10,7 +10,7 @@ const Dashboard = () => {
           Nome da Amostra
         </div>
         <div className="flex flex-row">
-          <DashboardItem marginRigth="6">
+          <DashboardItem marginRigth={true}>
             <div>
               <h1 className="text-[#505D68]">Temperatura: temp</h1>
             </div>
@@ -22,7 +22,7 @@ const Dashboard = () => {
           </DashboardItem>
         </div>
         <div className="flex flex-row mt-6">
-          <DashboardItem marginRigth="6">
+          <DashboardItem marginRigth={true}>
             <div>
               <h1 className="text-[#505D68]">Media Temp: meTemp</h1>
               <h1 className="text-[#505D68]">Media Ph: mePh</h1>
@@ -36,7 +36,7 @@ const Dashboard = () => {
           </DashboardItem>
         </div>
         <div className="flex flex-row mt-6">
-          <DashboardItem marginRigth="6">
+          <DashboardItem marginRigth={true}>
             <div>
               <h1 className="text-[#505D68]">Moda Temp: modaTemp</h1>
               <h1 className="text-[#505D68]">Moda Ph: modaPh</h1>
@@ -50,7 +50,7 @@ const Dashboard = () => {
           </DashboardItem>
         </div>
         <div className="flex flex-row mt-6">
-          <DashboardItem marginRigth="6">
+          <DashboardItem marginRigth={true}>
             <div>
               <h1 className="text-[#505D68]">Assimetria Temp: assTemp</h1>
               <h1 className="text-[#505D68]">Curtose Temp: curtoseTemp</h1>
