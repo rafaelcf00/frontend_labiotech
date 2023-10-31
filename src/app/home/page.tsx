@@ -40,8 +40,8 @@ export default function Home() {
           >
             <IoAddCircle size={36} color="#424B54" />
           </div>
-          {samples.map((item: Sample) => (
-            <SampleItem name={item.name} temp="16" ph="x" />
+          {samples.map((item: Sample, index) => (
+            <SampleItem key={index} name={item.name} temp="16" ph="x" />
           ))}
         </div>
       )}
