@@ -1,5 +1,5 @@
-import ContentMain from "@/components/ContentMain";
-import DashboardItem from "@/components/Dashboard/DashboardItem";
+import ContentMain from "../components/ContentMain";
+import DashboardItem from "../components/Dashboard/DashboardItem";
 import React from "react";
 
 const Dashboard = () => {

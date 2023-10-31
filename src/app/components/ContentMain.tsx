@@ -2,7 +2,7 @@ import React from "react";
 
 type ContenMainProps = {
   children: React.ReactNode;
-  title: string;
+  title?: string;
 };
 
 const ContentMain = ({ children, title }: ContenMainProps) => {

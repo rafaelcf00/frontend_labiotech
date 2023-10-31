@@ -11,7 +11,7 @@ const Sidebar = () => {
   return (
     <aside className="bg-primary-blue min-h-screen h-full w-20 md:w-24 flex items-center justify-center fixed bottom-0 left-0">
       <ul>
-        <NavItem icon={ImHome3} href="/" />
+        <NavItem icon={ImHome3} href="/home" />
         <NavItem icon={BiSolidDashboard} href="dashboard" />
         <NavItem icon={BiSolidBarChartAlt2} href="charts" />
       </ul>
