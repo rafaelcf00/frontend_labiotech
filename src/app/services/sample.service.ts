@@ -6,13 +6,14 @@ import useLoading from "../utils/hooks/useLoading";
 export const useSampleService = () => {
   const loading = useLoading();
 
-  const POST = async (data: Sample): Promise<Sample | undefined> => {
+  const POST = async (id: number | any, data: Sample,  session: string | any): Promise<Sample | undefined> => {
     loading.onActive();
 
-    const response = await fetchWrapper<Sample>(`samples`, {
+    const response = await fetchWrapper<Sample>(`samples/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `${session}`,
       },
       body: JSON.stringify(data),
     });
@@ -28,11 +29,14 @@ export const useSampleService = () => {
     return response;
   };
 
-  const GETALL = async (): Promise<Sample[] | undefined> => {
+  const GETALL = async (session: string | any): Promise<Sample[] | undefined> => {
     loading.onActive();
 
     const response = await fetchWrapper<Sample[]>("samples", {
       method: "GET",
+      headers: {
+        Authorization: `${session}`,
+      },
     });
 
     if (response) {
@@ -46,9 +50,12 @@ export const useSampleService = () => {
     return response;
   };
 
-  const GETBYID = async (id: string): Promise<Sample | undefined> => {
+  const GETBYID = async (id: string, session: string | any): Promise<Sample | undefined> => {
     const response = await fetchWrapper<Sample>(`samples/${id}`, {
       method: "GET",
+      headers: {
+        Authorization: `${session}`,
+      },
     });
 
     if (!response) {
@@ -58,9 +65,12 @@ export const useSampleService = () => {
     return response;
   };
 
-  const DELETE = async (id: string): Promise<void> => {
+  const DELETE = async (id: string, session: string | any): Promise<void> => {
     await fetchWrapper<Sample[]>(`samples/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `${session}`,
+      },
     });
   };
 

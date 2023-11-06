@@ -10,29 +10,33 @@ import { Sample } from "../models/Sample";
 import Loader from "../components/Loader";
 import useLoading from "../utils/hooks/useLoading";
 
+import { useSession } from "next-auth/react";
+
 export default function Home() {
   const sampleRegisterModal = useSampleRegisterModal();
   const sampleService = useSampleService();
   const [samples, setSamples] = useState<Sample[]>([]);
   const loading = useLoading();
+  const { data: session, status } = useSession();
 
   console.log(loading.isLoader);
 
   useEffect(() => {
     const getSamples = async () => {
-      const fetchedSamples = await sampleService.GETALL();
+      const fetchedSamples = await sampleService.GETALL(session?.user?.accessToken);
       if (fetchedSamples) {
         setSamples(fetchedSamples);
       }
     };
     getSamples();
-  }, []);
+  }, [session]);
+
+  console.log("Samples: ", samples)
 
   return (
     <ContentMain title="Amostras">
-      {loading.isLoader === true ? (
-        <Loader />
-      ) : (
+
+   
         <div className="w-full mx-4 md:mx-16">
           <div
             onClick={() => sampleRegisterModal.onOpen()}
@@ -44,7 +48,7 @@ export default function Home() {
             <SampleItem key={index} name={item.name} temp="16" ph="x" />
           ))}
         </div>
-      )}
+     
     </ContentMain>
   );
 }

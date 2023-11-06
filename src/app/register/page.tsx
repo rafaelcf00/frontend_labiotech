@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useRouter } from "next/navigation";
+import { useSampleService } from "../services/sample.service";
 
 const registerUserFormSchema = z.object({
   name: z.string().min(1, "O campo de nome é obrigatório"),
@@ -13,7 +14,7 @@ const registerUserFormSchema = z.object({
     .string()
     .min(1, "O campo de email é obrigatório")
     .email("Não é um email válido"),
-  username: z.string().min(1, "O campo de usuário é obrigatório"),
+  username: z.string().min(1, "O campo de email é obrigatório"),
   password: z.string().min(1, "O campo de senha é obrigatório"),
 });
 
@@ -32,7 +33,9 @@ export default function Register() {
     resolver: zodResolver(registerUserFormSchema),
   });
 
-  const onSubmit = (data: any) => {
+  const sampleService = useSampleService();
+
+  const onSubmit = (data: registerUserFormData) => {
     console.log(data);
     reset();
     router.push("/");
@@ -66,9 +69,9 @@ export default function Register() {
             </div>
             <div className="mb-5">
               <Input
-                id="username"
-                label="Usuário"
-                errors={errors.username}
+                id="email"
+                label="E-mail"
+                errors={errors.email}
                 register={register}
               />
             </div>

@@ -8,6 +8,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
 import SampleRegisterModal from "./components/Modals/SampleRegisterModal";
 import useSampleRegisterModal from "./utils/hooks/useSampleRegisterModal";
+import AuthProvider from "./providers/AuthProvider";
+import ToasterProvider from "./providers/ToasterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <AuthProvider>
       <body className={`${inter.className} relative`}>
+        <ToasterProvider/>
         <SampleRegisterModal
           isOpen={sampleRegisterModal.isOpen}
           onClose={sampleRegisterModal.onClose}
@@ -43,6 +47,7 @@ export default function RootLayout({
           </div>
         </div>
       </body>
+      </AuthProvider>
     </html>
   );
 }

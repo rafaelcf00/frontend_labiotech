@@ -6,9 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "./components/Input";
 import Button from "./components/Button";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const loginUserFormSchema = z.object({
-  username: z.string().min(1, "O campo de usuário é obrigatório"),
+  email: z.string().min(1, "O campo de email é obrigatório"),
   password: z.string().min(1, "O campo de senha é obrigatório"),
 });
 
@@ -27,11 +29,21 @@ export default function Login() {
     resolver: zodResolver(loginUserFormSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    reset();
-    router.push("/home");
+  const onSubmit = (data: loginUserFormData) => {
+
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    }).then((callback: any) => {
+      if (callback.error) {
+        toast.error(callback.error);
+      } else {
+        router.push('/home')
+        toast.success("Logado com sucesso");
+      }
+    });
   };
+
 
   return (
     <div className="bg-primary-blue min-h-screen w-full mx-auto flex justify-center items-center">
@@ -45,9 +57,9 @@ export default function Login() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <Input
-                id="username"
-                label="Usuário"
-                errors={errors.username}
+                id="email"
+                label="E-mail"
+                errors={errors.email}
                 register={register}
               />
             </div>

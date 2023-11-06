@@ -6,6 +6,11 @@ import Input from "../Input";
 import { z } from "zod";
 import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSampleService } from "@/app/services/sample.service";
+import { Sample } from "@/app/models/Sample";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 
 type SampleRegisterModalProps = {
   isOpen?: boolean;
@@ -22,6 +27,7 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const sampleService = useSampleService();
   const sampleRegisterModal = useSampleRegisterModal();
   const {
     register,
@@ -29,12 +35,20 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
     watch,
     reset,
     formState: { errors },
-  } = useForm<registerSampleFormData>({
+  } = useForm<Sample>({
     resolver: zodResolver(registerSampleFormSchema),
   });
-  const onSubmit = (data: any) => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const onSubmit = (data: Sample) => {
     console.log(data);
-    reset();
+    sampleService.POST(
+     session?.user?.id,data,session?.user?.accessToken
+    ).then((res) => {
+      console.log("Criado");
+      sampleRegisterModal.onClose();
+      reset();
+    });
   };
   return (
     <Modal
