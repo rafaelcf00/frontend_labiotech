@@ -8,6 +8,8 @@ import Button from "./components/Button";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import Loader from "./components/Loader";
 
 const loginUserFormSchema = z.object({
   email: z.string().min(1, "O campo de email é obrigatório"),
@@ -18,6 +20,7 @@ type loginUserFormData = z.infer<typeof loginUserFormSchema>;
 
 export default function Login() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -30,20 +33,21 @@ export default function Login() {
   });
 
   const onSubmit = (data: loginUserFormData) => {
-
+    setLoading(true);
     signIn("credentials", {
       ...data,
       redirect: false,
     }).then((callback: any) => {
       if (callback.error) {
+        setLoading(false);
         toast.error(callback.error);
       } else {
-        router.push('/home')
+        setLoading(false);
+        router.push("/home");
         toast.success("Logado com sucesso");
       }
     });
   };
-
 
   return (
     <div className="bg-primary-blue min-h-screen w-full mx-auto flex justify-center items-center">
@@ -57,6 +61,7 @@ export default function Login() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <Input
+                type="text"
                 id="email"
                 label="E-mail"
                 errors={errors.email}
@@ -65,6 +70,7 @@ export default function Login() {
             </div>
             <div>
               <Input
+                type="password"
                 id="password"
                 label="Senha"
                 errors={errors.password}
@@ -76,9 +82,13 @@ export default function Login() {
                 Esqueci minha senha
               </button>
             </div>
-            <div className="w-full mt-6">
-              <Button type="submit" label="Entrar" />
-            </div>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="w-full mt-6">
+                <Button type="submit" label="Entrar" />
+              </div>
+            )}
             <div className="mt-4">
               <button
                 onClick={() => router.push("/register")}

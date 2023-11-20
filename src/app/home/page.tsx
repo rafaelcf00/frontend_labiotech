@@ -16,27 +16,30 @@ export default function Home() {
   const sampleRegisterModal = useSampleRegisterModal();
   const sampleService = useSampleService();
   const [samples, setSamples] = useState<Sample[]>([]);
-  const loading = useLoading();
+  const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
 
-  console.log(loading.isLoader);
-
   useEffect(() => {
+    setLoading(true);
     const getSamples = async () => {
-      const fetchedSamples = await sampleService.GETALL(session?.user?.accessToken);
+      const fetchedSamples = await sampleService.GETALL(
+        session?.user?.accessToken
+      );
       if (fetchedSamples) {
+        setLoading(false);
         setSamples(fetchedSamples);
       }
     };
-    getSamples();
-  }, [session]);
-
-  console.log("Samples: ", samples)
+    if (session?.user?.accessToken) {
+      getSamples();
+    }
+  }, [session?.user?.accessToken]);
 
   return (
     <ContentMain title="Amostras">
-
-   
+      {loading ? (
+        <Loader />
+      ) : (
         <div className="w-full mx-4 md:mx-16">
           <div
             onClick={() => sampleRegisterModal.onOpen()}
@@ -45,10 +48,15 @@ export default function Home() {
             <IoAddCircle size={36} color="#424B54" />
           </div>
           {samples.map((item: Sample, index) => (
-            <SampleItem key={index} name={item.name} temp="16" ph="x" />
+            <SampleItem
+              key={index}
+              name={item.name}
+              temp={item.temperature.toString()}
+              ph={item.ph.toString()}
+            />
           ))}
         </div>
-     
+      )}
     </ContentMain>
   );
 }

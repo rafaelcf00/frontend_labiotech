@@ -6,7 +6,11 @@ import useLoading from "../utils/hooks/useLoading";
 export const useSampleService = () => {
   const loading = useLoading();
 
-  const POST = async (id: number | any, data: Sample,  session: string | any): Promise<Sample | undefined> => {
+  const POST = async (
+    id: number | any,
+    data: Sample,
+    session: string | any
+  ): Promise<Sample | undefined> => {
     loading.onActive();
 
     const response = await fetchWrapper<Sample>(`samples/${id}`, {
@@ -29,15 +33,22 @@ export const useSampleService = () => {
     return response;
   };
 
-  const GETALL = async (session: string | any): Promise<Sample[] | undefined> => {
+  const GETALL = async (
+    session: string | any,
+    page: number = 1,
+    offset: number = 50
+  ): Promise<Sample[] | undefined> => {
     loading.onActive();
 
-    const response = await fetchWrapper<Sample[]>("samples", {
-      method: "GET",
-      headers: {
-        Authorization: `${session}`,
-      },
-    });
+    const response = await fetchWrapper<Sample[]>(
+      `samples?page=${page}&offset=${offset}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${session}`,
+        },
+      }
+    );
 
     if (response) {
       loading.onInactive();
@@ -50,7 +61,10 @@ export const useSampleService = () => {
     return response;
   };
 
-  const GETBYID = async (id: string, session: string | any): Promise<Sample | undefined> => {
+  const GETBYID = async (
+    id: string,
+    session: string | any
+  ): Promise<Sample | undefined> => {
     const response = await fetchWrapper<Sample>(`samples/${id}`, {
       method: "GET",
       headers: {

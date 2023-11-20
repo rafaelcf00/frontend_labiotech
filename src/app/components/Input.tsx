@@ -6,9 +6,10 @@ type InputProps = {
   label: string;
   register: UseFormRegister<any>;
   errors: any;
+  type: string;
 };
 
-const Input: React.FC<InputProps> = ({ register, label, errors, id }) => {
+const Input: React.FC<InputProps> = ({ register, label, errors, id, type = "text" }) => {
   return (
     <div className="flex flex-col">
       <label className="text-primary-blue font-bold" htmlFor="">
@@ -18,7 +19,7 @@ const Input: React.FC<InputProps> = ({ register, label, errors, id }) => {
         className="bg-[#ECEDEE] rounded-md  p-2"
         id={id}
         {...register(id)}
-        type="text"
+        type={type}
       />
       {errors && <span className="text-red-600 mt-2">{errors.message}</span>}
     </div>

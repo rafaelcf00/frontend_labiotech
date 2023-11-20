@@ -53,6 +53,7 @@ export default function Register() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <Input
+                type="text"
                 id="name"
                 label="Nome"
                 errors={errors.name}
@@ -61,30 +62,35 @@ export default function Register() {
             </div>
             <div className="mb-5">
               <Input
+                type="email"
                 id="email"
                 label="E-mail"
                 errors={errors.email}
                 register={register}
               />
             </div>
-            <div className="mb-5">
-              <Input
-                id="email"
-                label="E-mail"
-                errors={errors.email}
-                register={register}
-              />
-            </div>
+
             <div>
               <Input
+                type="password"
                 id="password"
                 label="Senha"
                 errors={errors.password}
                 register={register}
               />
             </div>
-            <div className="w-full mt-6">
-              <Button type="submit" label="Cadastrar" />
+            <div className="flex w-full mt-6">
+              <div className="mr-3 w-full">
+                <Button
+                  onClick={() => router.back()}
+                  type="button"
+                  background="bg-red-600"
+                  label="Voltar"
+                />
+              </div>
+              <div className="w-full">
+                <Button type="submit" label="Cadastrar" />
+              </div>
             </div>
           </form>
         </div>

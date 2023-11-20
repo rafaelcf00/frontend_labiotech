@@ -11,7 +11,6 @@ import { Sample } from "@/app/models/Sample";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-
 type SampleRegisterModalProps = {
   isOpen?: boolean;
   onClose: () => void;
@@ -42,13 +41,13 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
   const { data: session, status } = useSession();
   const onSubmit = (data: Sample) => {
     console.log(data);
-    sampleService.POST(
-     session?.user?.id,data,session?.user?.accessToken
-    ).then((res) => {
-      console.log("Criado");
-      sampleRegisterModal.onClose();
-      reset();
-    });
+    sampleService
+      .POST(session?.user?.id, data, session?.user?.accessToken)
+      .then((res) => {
+        console.log("Criado");
+        sampleRegisterModal.onClose();
+        reset();
+      });
   };
   return (
     <Modal
@@ -67,6 +66,7 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-5">
                 <Input
+                  type="text"
                   id="name"
                   label="Nome"
                   errors={errors.name}
