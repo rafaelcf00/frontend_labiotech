@@ -57,6 +57,32 @@ export const useSampleService = () => {
     return response;
   };
 
+  const FINDDATE = async (
+    session: string | any,
+    initial: Date,
+    final: Date,
+    page: number = 1,
+    offset: number = 50
+  ): Promise<Sample[] | undefined> => {
+    loading.onActive();
+
+    const response = await fetchWrapper<Sample[]>(
+      `samples/date?page=${page}&offset=${offset}&initial=${initial}&final=${final}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${session}`,
+        },
+      }
+    );
+
+    if (!response) {
+      console.error("Sem resposta do servidor");
+    }
+
+    return response;
+  };
+
   const GETBYID = async (
     id: string,
     session: string | any
@@ -87,6 +113,7 @@ export const useSampleService = () => {
   return {
     GETALL,
     GETBYID,
+    FINDDATE,
     POST,
     DELETE,
   };

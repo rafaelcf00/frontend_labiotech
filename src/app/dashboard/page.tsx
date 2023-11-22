@@ -9,20 +9,28 @@ import { Sample } from "../models/Sample";
 import * as ss from "simple-statistics";
 import { Scatter } from "react-chartjs-2";
 import Loader from "../components/Loader";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const sampleService = useSampleService();
   const [samples, setSamples] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState<any>("1970-01-01");
+  const initialEndDate = new Date().toISOString().split("T")[0];
+  const [endDate, setEndDate] = useState<any>(initialEndDate);
+  const [limit, setLimit] = useState<any>(50);
+  const [limitSamples, setLimitSamples] = useState<any>(50);
 
   useEffect(() => {
     setLoading(true);
     const getSamples = async () => {
-      const fetchedSamples = await sampleService.GETALL(
+      const fetchedSamples = await sampleService.FINDDATE(
         session?.user?.accessToken,
+        startDate,
+        endDate,
         1,
-        200000
+        limitSamples
       );
       if (fetchedSamples) {
         setLoading(false);
@@ -32,7 +40,7 @@ const Dashboard = () => {
     if (session?.user?.accessToken) {
       getSamples();
     }
-  }, [session?.user?.accessToken]);
+  }, [session?.user?.accessToken, startDate, endDate, limitSamples]);
 
   const sumTemp = samples.reduce(
     (accumulator, currentValue) =>
@@ -131,9 +139,46 @@ const Dashboard = () => {
   const probTemp = ss.probit(dpTemp);
   const probPh = ss.probit(dpPh);
 
+  console.log(startDate);
+
   return (
     <ContentMain title="Dashboard">
       <div className="flex flex-col w-full mx-4 md:mx-16">
+        <div className=" w-full flex items-center justify-between ">
+          <div className="flex flex-col">
+            <label className="mb-2 font-bold text-primary-blue" htmlFor="">
+              Quantidade de amostras
+            </label>
+            <input
+              className="border border-solid border-primary-blue p-4 rounded-lg "
+              type="number"
+              placeholder="Limite de Amostras"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+              onBlur={(e) => {
+                if (Number(limit) < 3) {
+                  toast.error("O limite mínimo é 3");
+                } else {
+                  setLimitSamples(limit);
+                }
+              }}
+            />
+          </div>
+          <div className="">
+            <input
+              className="bg-primary-blue p-6 rounded-lg mr-5 text-white cursor-pointer"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <input
+              className="bg-primary-blue p-6 rounded-lg text-white cursor-pointer"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+        </div>
         <div className="mt-5">
           <div className="flex flex-row">
             <DashboardItem marginRigth={true}>
@@ -217,7 +262,7 @@ const Dashboard = () => {
               </div>
             </DashboardItem>
           </div>
-          <div className="flex flex-row mt-6">
+          {/* <div className="flex flex-row mt-6">
             <DashboardItem>
               <div>
                 {loading ? (
@@ -234,7 +279,7 @@ const Dashboard = () => {
                 )}
               </div>
             </DashboardItem>
-          </div>
+          </div> */}
         </div>
       </div>
     </ContentMain>
