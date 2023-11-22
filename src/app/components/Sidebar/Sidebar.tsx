@@ -16,7 +16,7 @@ const Sidebar = () => {
         <NavItem
           target="_blank"
           icon={BiSolidBarChartAlt2}
-          href="https://devrafaelcesar.grafana.net/d/aad81452-521e-475a-b396-76ac1bf20472/labiotech?orgId=1&refresh=1m&from=now-2d&to=now"
+          href="https://devrafaelcesar.grafana.net/d/016564f9-43ce-4471-81b2-eb1eccc829dc/labiotech-pi?orgId=1&refresh=1m"
         />
       </ul>
     </aside>

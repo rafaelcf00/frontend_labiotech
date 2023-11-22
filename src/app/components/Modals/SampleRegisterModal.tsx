@@ -10,6 +10,7 @@ import { useSampleService } from "@/app/services/sample.service";
 import { Sample } from "@/app/models/Sample";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 type SampleRegisterModalProps = {
   isOpen?: boolean;
@@ -57,8 +58,7 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
         session?.user?.accessToken
       )
       .then((res) => {
-        console.log("Res: ", res);
-        console.log("Criado");
+        toast.success("Criado com sucesso");
         sampleRegisterModal.onClose();
         reset();
       })
