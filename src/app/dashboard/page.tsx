@@ -54,8 +54,8 @@ const Dashboard = () => {
 
   // Media
 
-  const meTemp = sumTemp / samples.length;
-  const mePh = sumPh / samples.length;
+  const meTemp: any = (sumTemp / samples.length).toFixed(2);
+  const mePh: any = (sumPh / samples.length).toFixed(2);
 
   // Mediana
 
@@ -83,14 +83,16 @@ const Dashboard = () => {
   );
 
   if (sortedTemps.length % 2 === 0) {
-    medianTemp =
+    medianTemp = (
       (Number(sortedTemps[Number(middleTempIndex) - 1]) +
         Number(sortedTemps[Number(middleTempIndex)])) /
-      2;
-    medianPh =
+      2
+    ).toFixed(2);
+    medianPh = (
       (Number(sortedPh[Number(middlePhIndex) - 1]) +
         Number(sortedPh[Number(middlePhIndex)])) /
-      2;
+      2
+    ).toFixed(2);
   } else {
     medianTemp = sortedTemps[middleTempIndex];
     medianPh = sortedPh[middlePhIndex];
@@ -109,7 +111,7 @@ const Dashboard = () => {
       0
     ) /
     (arrVarianciaTemp.length - 1);
-  const dpTemp = Math.sqrt(medVarianciaTemp);
+  const dpTemp = Math.sqrt(medVarianciaTemp).toFixed(2);
 
   const arrVarianciaPh = sortedPh.map((item) => Math.pow(item - mePh, 2));
   const medVarianciaPh =
@@ -118,7 +120,7 @@ const Dashboard = () => {
       0
     ) /
     (arrVarianciaPh.length - 1);
-  const dpPh = Math.sqrt(medVarianciaPh);
+  const dpPh = Math.sqrt(medVarianciaPh).toFixed(2);
 
   // Assimetria
 
@@ -130,16 +132,14 @@ const Dashboard = () => {
   if (samples.length > 0) {
     sortedTempsNum = sortedTemps.map((str) => parseFloat(str));
     sortedTempsPhNum = sortedPh.map((str) => parseFloat(str));
-    assTemp = ss.sampleSkewness(sortedTempsNum);
-    assPh = ss.sampleSkewness(sortedTempsPhNum);
+    assTemp = ss.sampleSkewness(sortedTempsNum).toFixed(2);
+    assPh = ss.sampleSkewness(sortedTempsPhNum).toFixed(2);
   }
 
   // Probabilidade
 
-  const probTemp = ss.probit(dpTemp);
-  const probPh = ss.probit(dpPh);
-
-  console.log(startDate);
+  // const probTemp = ss.probit(dpTemp);
+  // const probPh = ss.probit(dpPh);
 
   return (
     <ContentMain title="Dashboard">

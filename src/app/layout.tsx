@@ -10,6 +10,7 @@ import SampleRegisterModal from "./components/Modals/SampleRegisterModal";
 import useSampleRegisterModal from "./utils/hooks/useSampleRegisterModal";
 import AuthProvider from "./providers/AuthProvider";
 import ToasterProvider from "./providers/ToasterProvider";
+import Auth from "./auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,24 +30,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
-      <body className={`${inter.className} relative`}>
-        <ToasterProvider/>
-        <SampleRegisterModal
-          isOpen={sampleRegisterModal.isOpen}
-          onClose={sampleRegisterModal.onClose}
-        />
-        {pathname !== "/" && pathname !== "/register" && <Header />}
-        <div className="flex flex-row">
-          {pathname !== "/" && pathname !== "/register" && <Sidebar />}
-          <div
-            className={`${
-              pathname !== "/" && pathname !== "/register" && "ml-20 md:ml-24 "
-            } w-full flex justify-center`}
-          >
-            {children}
+        <body className={`${inter.className} relative`}>
+          <ToasterProvider />
+          <SampleRegisterModal
+            isOpen={sampleRegisterModal.isOpen}
+            onClose={sampleRegisterModal.onClose}
+          />
+          {pathname !== "/" && pathname !== "/register" && <Header />}
+          <div className="flex flex-row">
+            {pathname !== "/" && pathname !== "/register" && <Sidebar />}
+            <div
+              className={`${
+                pathname !== "/" &&
+                pathname !== "/register" &&
+                "ml-20 md:ml-24 "
+              } w-full flex justify-center`}
+            >
+              <Auth>{children}</Auth>
+            </div>
           </div>
-        </div>
-      </body>
+        </body>
       </AuthProvider>
     </html>
   );
