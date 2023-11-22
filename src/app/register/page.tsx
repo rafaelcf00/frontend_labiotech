@@ -7,6 +7,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { useRouter } from "next/navigation";
 import { useSampleService } from "../services/sample.service";
+import toast from "react-hot-toast";
 
 const registerUserFormSchema = z.object({
   name: z.string().min(1, "O campo de nome é obrigatório"),
@@ -14,7 +15,6 @@ const registerUserFormSchema = z.object({
     .string()
     .min(1, "O campo de email é obrigatório")
     .email("Não é um email válido"),
-  username: z.string().min(1, "O campo de email é obrigatório"),
   password: z.string().min(1, "O campo de senha é obrigatório"),
 });
 
@@ -33,12 +33,22 @@ export default function Register() {
     resolver: zodResolver(registerUserFormSchema),
   });
 
-  const sampleService = useSampleService();
-
-  const onSubmit = (data: registerUserFormData) => {
-    console.log(data);
-    reset();
-    router.push("/");
+  const onSubmit = async (data: registerUserFormData) => {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        toast.success("Usuário cadastrado com sucesso!");
+        reset();
+        router.push("/");
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   };
 
   return (
