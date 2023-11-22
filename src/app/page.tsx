@@ -77,11 +77,6 @@ export default function Login() {
                 register={register}
               />
             </div>
-            <div className="flex justify-end mt-2">
-              <button className="text-primary-blue text-sm font-bold">
-                Esqueci minha senha
-              </button>
-            </div>
             {loading ? (
               <Loader />
             ) : (

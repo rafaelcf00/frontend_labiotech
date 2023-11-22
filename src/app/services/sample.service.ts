@@ -11,8 +11,6 @@ export const useSampleService = () => {
     data: Sample,
     session: string | any
   ): Promise<Sample | undefined> => {
-    loading.onActive();
-
     const response = await fetchWrapper<Sample>(`samples/${id}`, {
       method: "POST",
       headers: {
@@ -22,9 +20,7 @@ export const useSampleService = () => {
       body: JSON.stringify(data),
     });
 
-    if (response) {
-      loading.onInactive();
-    }
+    console.log("Response: ", response);
 
     if (!response) {
       console.error("Sem resposta do servidor");

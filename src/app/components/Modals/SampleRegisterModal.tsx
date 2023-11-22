@@ -18,6 +18,8 @@ type SampleRegisterModalProps = {
 
 const registerSampleFormSchema = z.object({
   name: z.string().min(1, "O campo de nome é obrigatório"),
+  temperature: z.string().min(1, "O campo de temperatura é obrigatório"),
+  ph: z.string().min(1, "O campo de ph é obrigatório"),
 });
 
 type registerSampleFormData = z.infer<typeof registerSampleFormSchema>;
@@ -40,13 +42,28 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
   const router = useRouter();
   const { data: session, status } = useSession();
   const onSubmit = (data: Sample) => {
-    console.log(data);
+    const { name, temperature, ph } = data;
+    console.log(session?.user?.id);
     sampleService
-      .POST(session?.user?.id, data, session?.user?.accessToken)
+      .POST(
+        1,
+        {
+          id: 342342,
+          name,
+          temperature: temperature,
+          ph: ph,
+          userId: 1,
+        },
+        session?.user?.accessToken
+      )
       .then((res) => {
+        console.log("Res: ", res);
         console.log("Criado");
         sampleRegisterModal.onClose();
         reset();
+      })
+      .catch((err) => {
+        console.log("ERR: ", err);
       });
   };
   return (
@@ -70,6 +87,24 @@ const SampleRegisterModal: React.FC<SampleRegisterModalProps> = ({
                   id="name"
                   label="Nome"
                   errors={errors.name}
+                  register={register}
+                />
+              </div>
+              <div className="mb-5">
+                <Input
+                  type="text"
+                  id="temperature"
+                  label="Temperatura"
+                  errors={errors.temperature}
+                  register={register}
+                />
+              </div>
+              <div className="mb-5">
+                <Input
+                  type="text"
+                  id="ph"
+                  label="Ph"
+                  errors={errors.ph}
                   register={register}
                 />
               </div>

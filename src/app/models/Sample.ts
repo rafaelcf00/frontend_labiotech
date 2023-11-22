@@ -1,6 +1,7 @@
 export interface Sample {
-  id: string;
+  id: number;
   name: string;
   temperature: number;
   ph: number;
+  userId: number;
 }

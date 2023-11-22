@@ -22,7 +22,7 @@ const Dashboard = () => {
       const fetchedSamples = await sampleService.GETALL(
         session?.user?.accessToken,
         1,
-        20000
+        200000
       );
       if (fetchedSamples) {
         setLoading(false);
